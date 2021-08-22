@@ -9,6 +9,8 @@ declare module 'vue' {
     CarbonLogoGithub: typeof import('virtual:vite-icons/carbon/logo-github')['default']
     CarbonMoon: typeof import('virtual:vite-icons/carbon/moon')['default']
     CarbonSun: typeof import('virtual:vite-icons/carbon/sun')['default']
+    Entity: typeof import('./src/components/erd/ERGraphDemo/Entity.vue')['default']
+    ErdEntity: typeof import('./src/components/erd/ERGraphDemo/ErdEntity.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     README: typeof import('./src/components/README.md')['default']
   }
