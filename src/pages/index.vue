@@ -1,61 +1,56 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { useUserStore } from '~/stores/user'
+import { Graph } from '@antv/x6'
 
-const user = useUserStore()
-const name = ref(user.savedName)
-
-const router = useRouter()
-const go = () => {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
+const data = {
+  // 节点
+  nodes: [
+    {
+      id: 'node1', // String，可选，节点的唯一标识
+      x: 40, // Number，必选，节点位置的 x 值
+      y: 40, // Number，必选，节点位置的 y 值
+      width: 80, // Number，可选，节点大小的 width 值
+      height: 40, // Number，可选，节点大小的 height 值
+      label: 'hello', // String，节点标签
+    },
+    {
+      id: 'node2', // String，节点的唯一标识
+      x: 160, // Number，必选，节点位置的 x 值
+      y: 180, // Number，必选，节点位置的 y 值
+      width: 80, // Number，可选，节点大小的 width 值
+      height: 40, // Number，可选，节点大小的 height 值
+      label: 'world', // String，节点标签
+    },
+  ],
+  // 边
+  edges: [
+    {
+      source: 'node1', // String，必须，起始节点 id
+      target: 'node2', // String，必须，目标节点 id
+    },
+  ],
 }
 
-const { t } = useI18n()
+onMounted(() => {
+  const graph = new Graph({
+    container: document.getElementById('container'),
+    background: {
+      color: '#fffbe6', // 设置画布背景颜色
+    },
+    grid: {
+      size: 10, // 网格大小 10px
+      visible: true, // 渲染网格背景
+    },
+  })
+
+  graph.fromJSON(data)
+})
 </script>
 
 <template>
-  <div>
-    <p class="text-4xl">
-      <carbon-campsite class="inline-block" />
-    </p>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em class="text-sm opacity-75">{{ t('intro.desc') }}</em>
-    </p>
-
-    <div class="py-4" />
-
-    <input
-      id="input"
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      :aria-label="t('intro.whats-your-name')"
-      type="text"
-      autocomplete="false"
-      @keydown.enter="go"
-      p="x-4 y-2"
-      w="250px"
-      text="center"
-      bg="transparent"
-      border="~ rounded gray-200 dark:gray-700"
-      outline="none active:none"
-    >
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        class="m-3 text-sm btn"
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
-    </div>
-  </div>
+  <div id="container" class="h-full"></div>
 </template>
+
+<route lang="yaml">
+meta:
+  layout: workspace
+</route>
